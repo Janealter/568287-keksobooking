@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Никита Бакулин](https://up.htmlacademy.ru/javascript/11/user/568287).
-* Наставник: `Неизвестно`.
+* Наставник: `Жека Лепёшкин`.
 
 ---
 
