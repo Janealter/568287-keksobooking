@@ -72,7 +72,9 @@ var getRandomInt = function (min, max) {
 // Функция генерации фрагмента разметки с метками на карте
 var generateMapPinsFragment = function (adsArray) {
   var MAP_PIN_POINTER_HEIGHT = 18;
-  var mapPinTemplate = document.querySelectorAll('template')[0].content;
+  var mapPinTemplate = document.querySelector('template').content.cloneNode(true);
+  // Удаляем из шаблона лишний блок
+  mapPinTemplate.removeChild(mapPinTemplate.firstElementChild);
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < adsArray.length; i++) {
     var mapPinElement = mapPinTemplate.cloneNode(true);
@@ -100,8 +102,10 @@ var generateAdFragment = function (ad) {
       housingType = 'Бунгало';
       break;
   }
-  // Создаем объявление, клонируя шаблон
-  var adFragment = document.querySelectorAll('template')[1].content.cloneNode(true);
+  // Создаем фрагмент объявления, клонируя шаблон
+  var adFragment = document.querySelector('template').content.cloneNode(true);
+  // Удаляем из объявления лишний элемент
+  adFragment.removeChild(adFragment.lastElementChild);
   // Создаем простые ссылки на нужные нам объекты внутри adFragment
   var title = adFragment.querySelector('h3');
   var pBlocks = adFragment.querySelectorAll('p');
