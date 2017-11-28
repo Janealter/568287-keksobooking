@@ -90,18 +90,17 @@ var generateMapPinsFragment = function (adsArray) {
 
 // Функция генерации фрагмента разметки с объявлением
 var generateAdFragment = function (ad) {
-  var housingType = '';
-  switch (ad.offer.type) {
-    case 'flat':
-      housingType = 'Квартира';
-      break;
-    case 'house':
-      housingType = 'Дом';
-      break;
-    case 'bungalo':
-      housingType = 'Бунгало';
-      break;
-  }
+  var HOUSING_TYPES = {
+    'flat': {
+      'ru': 'Квартира'
+    },
+    'house': {
+      'ru': 'Дом'
+    },
+    'bungalo': {
+      'ru': 'Бунгало'
+    }
+  };
   // Создаем фрагмент объявления, клонируя шаблон
   var adFragment = document.querySelector('template').content.cloneNode(true);
   // Удаляем из объявления лишний элемент
@@ -121,7 +120,7 @@ var generateAdFragment = function (ad) {
   title.textContent = ad.offer.title;
   address.textContent = ad.offer.address;
   price.textContent = ad.offer.price + ' ₽/ночь';
-  type.textContent = housingType;
+  type.textContent = HOUSING_TYPES[ad.offer.type].ru;
   roomCount.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
   checkinCheckout.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   // Клонируем и очищаем features, чтобы заполнить его с нуля нужными элементами
