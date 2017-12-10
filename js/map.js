@@ -51,8 +51,8 @@ var generateAdsArray = function () {
 // Функция создания массива случайной длины (в т.ч. и 0) из элементов переданного массива
 var getRandomLengthArray = function (arr) {
   var array = [];
-  var LENGTH = getRandomInt(0, arr.length);
-  for (var i = 0; i < LENGTH; i++) {
+  var length = getRandomInt(0, arr.length);
+  for (var i = 0; i < length; i++) {
     array[i] = arr[getRandomInt(0, arr.length - 1)];
     // Убираем повторения
     for (var j = 0; j < array.length; j++) {
@@ -80,6 +80,8 @@ var generateMapPinsFragment = function (adsArray) {
     var mapPinElement = mapPinTemplate.cloneNode(true);
     var button = mapPinElement.querySelector('button');
     var img = mapPinElement.querySelector('img');
+    button.id = i;
+    button.tabIndex = 0;
     button.style.left = (adsArray[i].location.x - img.width / 2) + 'px';
     button.style.top = (adsArray[i].location.y - img.height + MAP_PIN_POINTER_HEIGHT) + 'px';
     img.src = adsArray[i].author.avatar;
@@ -134,15 +136,124 @@ var generateAdFragment = function (ad) {
   return adFragment;
 };
 
-// Функция добавления в разметку меток и объявления
-var addMapPinsAndAd = function () {
-  // Получаем родительский элемент, в который затем добавим новые элементы
-  var map = document.querySelector('.map');
-  var ADS = generateAdsArray();
-  // Добавляем метки
+// Коды кнопок
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+// Генерируем массив объявлений
+var ADS = generateAdsArray();
+// Получаем объект карты для использования в функциях
+var map = document.querySelector('.map');
+
+// Добавляет метки на карту
+var addMapPinsToMap = function () {
   map.querySelector('.map__pins').appendChild(generateMapPinsFragment(ADS));
-  // Добавляем объявление
-  map.insertBefore(generateAdFragment(ADS[0]), map.querySelector('.map__filters-container'));
 };
 
-addMapPinsAndAd();
+// Открывает окно объявления
+var openAdPopup = function (adNumber) {
+  // Закрываем предыдущее, если оно есть
+  if (map.querySelector('.map__card.popup')) {
+    closeAdPopup();
+  }
+  var adPopup = generateAdFragment(ADS[adNumber]);
+  var closeButton = adPopup.querySelector('.popup__close');
+  closeButton.tabIndex = 0;
+  map.insertBefore(adPopup, map.querySelector('.map__filters-container'));
+  closeButton.addEventListener('click', onPopupCloseClick);
+  document.addEventListener('keydown', onDocumentEscPress);
+  closeButton.addEventListener('keydown', onPopupCloseEnterPress);
+};
+
+// Закрывает окно объявления
+var closeAdPopup = function () {
+  var adPopup = map.querySelector('.map__card.popup');
+  var closeButton = adPopup.querySelector('.popup__close');
+  closeButton.removeEventListener('click', onPopupCloseClick);
+  document.removeEventListener('keydown', onDocumentEscPress);
+  closeButton.removeEventListener('keydown', onPopupCloseEnterPress);
+  map.removeChild(adPopup);
+};
+
+// Обработчик события при наведении мыши на Map Pin Main
+var onMapPinMainMouseup = function (event) {
+  // Получаем объект формы
+  var noticeForm = document.querySelector('.notice__form');
+  map.classList.remove('map--faded');
+  addMapPinsToMap();
+  noticeForm.classList.remove('notice__form--disabled');
+  var fieldSets = noticeForm.querySelectorAll('fieldset');
+  for (var i = 0; i < fieldSets.length; i++) {
+    fieldSets[i].disabled = false;
+  }
+  event.target.removeEventListener('mouseup', onMapPinMainMouseup);
+};
+
+// Обработчик события при клике на любой Map Pin
+var onMapPinClick = function (event) {
+  // Выполняется, если произведен клик по любой кнопке Map Pin, кроме Map Pin Main
+  if (event.target.parentElement.classList.contains('map__pin') && !event.target.parentElement.classList.contains('map__pin--main')) {
+    activateMapPin(event.target.parentElement);
+  }
+};
+
+// Обработчик события при нажатии Enter на элементе popup__close
+var onMapPinEnterPress = function (event) {
+  // Выполняется, если произведен клик по любой кнопке Map Pin, кроме Map Pin Main
+  if (event.target.classList.contains('map__pin') && !event.target.classList.contains('map__pin--main') && event.keyCode === ENTER_KEYCODE) {
+    activateMapPin(event.target);
+  }
+};
+
+// Обработчик события при клике на элемент popup__close
+var onPopupCloseClick = function () {
+  closeAdPopup();
+  deactivateMapPin();
+};
+
+// Обработчик события при нажатии Esc
+var onDocumentEscPress = function (event) {
+  if (event.keyCode === ESC_KEYCODE) {
+    closeAdPopup();
+    deactivateMapPin();
+  }
+};
+
+// Обработчик события при нажатии Enter на элементе popup__close
+var onPopupCloseEnterPress = function (event) {
+  if (event.keyCode === ENTER_KEYCODE) {
+    closeAdPopup();
+    deactivateMapPin();
+  }
+};
+
+// Добавляет подсветку Map Pin, показывает объявление
+var activateMapPin = function (mapPin) {
+  deactivateMapPin();
+  mapPin.classList.add('map__pin--active');
+  openAdPopup(mapPin.id);
+};
+
+// Убирает подсветку Map Pin, если она есть
+var deactivateMapPin = function () {
+  var mapPinActive = map.querySelector('.map__pin--active');
+  if (mapPinActive) {
+    mapPinActive.classList.remove('map__pin--active');
+  }
+};
+
+// Функция добавления обработчика события mouseup для Map Pin Main
+var mapPinMainAddListener = function () {
+  var mapPinMain = map.querySelector('.map__pin--main');
+  mapPinMain.addEventListener('mouseup', onMapPinMainMouseup);
+};
+
+// Добавляет обработчики событий на Map Pins
+var mapPinsAddListeners = function () {
+  var mapPins = map.querySelector('.map__pins');
+  mapPins.addEventListener('click', onMapPinClick);
+  mapPins.addEventListener('keydown', onMapPinEnterPress);
+};
+
+mapPinMainAddListener();
+mapPinsAddListeners();
