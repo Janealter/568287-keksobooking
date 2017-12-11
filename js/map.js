@@ -144,6 +144,8 @@ var ENTER_KEYCODE = 13;
 var ADS = generateAdsArray();
 // Получаем объект карты для использования в функциях
 var map = document.querySelector('.map');
+// Получаем объект Notice для использования в функциях
+var notice = document.querySelector('.notice');
 
 // Добавляет метки на карту
 var addMapPinsToMap = function () {
@@ -227,6 +229,11 @@ var onPopupCloseEnterPress = function (event) {
   }
 };
 
+// Обработчик события invalid на любом поле ввода
+var onInputInvalid = function (event) {
+  event.target.style = 'border-color: red';
+};
+
 // Добавляет подсветку Map Pin, показывает объявление
 var activateMapPin = function (mapPin) {
   deactivateMapPin();
@@ -255,5 +262,55 @@ var mapPinsAddListeners = function () {
   mapPins.addEventListener('keydown', onMapPinEnterPress);
 };
 
+// Добавляет обработчики событий для полей Время заезда и выезда
+var timeinTimeoutSelectAddListeners = function () {
+  var timeinSelect = notice.querySelector('#timein');
+  var timeoutSelect = notice.querySelector('#timeout');
+  timeinSelect.addEventListener('change', function () {
+    timeoutSelect.selectedIndex = timeinSelect.selectedIndex;
+  });
+  timeoutSelect.addEventListener('change', function () {
+    timeinSelect.selectedIndex = timeoutSelect.selectedIndex;
+  });
+};
+
+// Добавляет обработчик событий для поля Тип жилья
+var typeSelectAddListener = function () {
+  var MIN_PRICES = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
+  };
+  var typeSelect = notice.querySelector('#type');
+  var priceInput = notice.querySelector('#price');
+  typeSelect.addEventListener('change', function () {
+    priceInput.min = MIN_PRICES[typeSelect[typeSelect.selectedIndex].value];
+  });
+};
+
+// Добавляет обработчик событий для поля Кол-во комнат
+var roomNumberSelectAddListener = function () {
+  var roomNumberSelect = notice.querySelector('#room_number');
+  var capacitySelect = notice.querySelector('#capacity');
+  roomNumberSelect.addEventListener('change', function () {
+    capacitySelect.value = roomNumberSelect.value !== '100' ? roomNumberSelect.value : '0';
+  });
+};
+
+// Добавляет обработчики события invalid для полей Заголовок, Адрес и Цена за ночь
+var checkedInputsAddListeners = function () {
+  var titleInput = notice.querySelector('#title');
+  var addressInput = notice.querySelector('#address');
+  var priceInput = notice.querySelector('#price');
+  titleInput.addEventListener('invalid', onInputInvalid);
+  addressInput.addEventListener('invalid', onInputInvalid);
+  priceInput.addEventListener('invalid', onInputInvalid);
+};
+
 mapPinMainAddListener();
 mapPinsAddListeners();
+timeinTimeoutSelectAddListeners();
+typeSelectAddListener();
+roomNumberSelectAddListener();
+checkedInputsAddListeners();
