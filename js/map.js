@@ -78,7 +78,7 @@ var generateMapPinsFragment = function (adsArray) {
   var MAP_PIN_POINTER_HEIGHT = 18;
   var mapPinTemplate = document.querySelector('template').content.cloneNode(true);
   // Удаляем из шаблона лишний блок
-  mapPinTemplate.removeChild(mapPinTemplate.firstElementChild);
+  mapPinTemplate.removeChild(mapPinTemplate.querySelector('.map__card.popup'));
   var fragment = document.createDocumentFragment();
   adsArray.forEach(function (ad, i) {
     var mapPinElement = mapPinTemplate.cloneNode(true);
@@ -110,7 +110,7 @@ var generateAdFragment = function (ad) {
   // Создаем фрагмент объявления, клонируя шаблон
   var adFragment = document.querySelector('template').content.cloneNode(true);
   // Удаляем из объявления лишний элемент
-  adFragment.removeChild(adFragment.lastElementChild);
+  adFragment.removeChild(adFragment.querySelector('.map__pin'));
   // Создаем простые ссылки на нужные нам объекты внутри adFragment
   var title = adFragment.querySelector('h3');
   var pBlocks = adFragment.querySelectorAll('p');
@@ -315,12 +315,12 @@ var setCapacitySelectOptions = function (allCapacityOptions) {
 var addRoomNumberSelectListener = function () {
   var capacitySelect = notice.querySelector('#capacity');
   var roomNumberSelect = notice.querySelector('#room_number');
-  // Получаем все возможные опции в начальном состоянии capacitySelect
-  var allCapacityOptions = capacitySelect.cloneNode(true).options;
+  // Клонируем capacitySelect в начальном состоянии
+  var capacitySelectOrig = capacitySelect.cloneNode(true);
   // Задаем начальные опции для capacitySelect
-  setCapacitySelectOptions(allCapacityOptions);
+  setCapacitySelectOptions(capacitySelectOrig.options);
   roomNumberSelect.addEventListener('change', function () {
-    setCapacitySelectOptions(allCapacityOptions);
+    setCapacitySelectOptions(capacitySelectOrig.options);
   });
 };
 
