@@ -4,9 +4,11 @@
   // Коды кнопок
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+
   var setRedBorder = function (object) {
     object.style = 'border-color: red';
   };
+
   window.util = {
     ENTER_KEYCODE: ENTER_KEYCODE,
     // Функция генерации случайного целого числа в определенном диапазоне
@@ -41,9 +43,7 @@
     // Действие при нажатии ENTER
     isEnterPressed: function (evt, func) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        if (typeof func === 'function') {
-          func();
-        }
+        func();
       }
     }
   };
