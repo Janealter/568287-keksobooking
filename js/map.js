@@ -33,8 +33,8 @@
   // Обработчик события при нажатии Enter на элементе popup__close
   var onMapPinEnterPress = function (event) {
     // Выполняется, если произведен клик по любой кнопке Map Pin, кроме Map Pin Main
-    if (event.target.classList.contains('map__pin') && !event.target.classList.contains('map__pin--main') && event.keyCode === window.util.ENTER_KEYCODE) {
-      activateMapPin(event.target);
+    if (event.target.classList.contains('map__pin') && !event.target.classList.contains('map__pin--main')) {
+      window.util.isEnterPressed(event, activateMapPin(event.target));
     }
   };
   // Добавляет подсветку Map Pin, показывает объявление

@@ -41,7 +41,9 @@
     // Действие при нажатии ENTER
     isEnterPressed: function (evt, func) {
       if (evt.keyCode === ENTER_KEYCODE) {
-        func();
+        if (typeof func === 'function') {
+          func();
+        }
       }
     }
   };
