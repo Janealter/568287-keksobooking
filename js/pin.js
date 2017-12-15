@@ -99,6 +99,9 @@
     mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
   };
 
+  // Ставим в поле Адрес координаты указателя Map Pin Main
+  window.form.setAddressCoords(mapPinMainCursorParams.getX(), mapPinMainCursorParams.getY());
+
   // Добавялем обработчик событий для Map Pin Main
   addMapPinMainListener();
 })();
