@@ -21,25 +21,25 @@
     var array = [];
     for (var i = 0; i < 8; i++) {
       array.push({
-        'author': {
-          'avatar': 'img/avatars/user0' + (i + 1) + '.png'
+        author: {
+          avatar: 'img/avatars/user0' + (i + 1) + '.png'
         },
-        'offer': {
-          'title': titles[i],
-          'address': '',
-          'price': window.util.getRandomInt(1000, 1000000),
-          'type': TYPES[window.util.getRandomInt(0, 2)],
-          'rooms': window.util.getRandomInt(1, 5),
-          'guests': '',
-          'checkin': TIMES[window.util.getRandomInt(0, 2)],
-          'checkout': TIMES[window.util.getRandomInt(0, 2)],
-          'features': window.util.getRandomLengthArray(FEATURES),
-          'description': '',
-          'photos': []
+        offer: {
+          title: titles[i],
+          address: '',
+          price: window.util.getRandomInt(1000, 1000000),
+          type: TYPES[window.util.getRandomInt(0, 2)],
+          rooms: window.util.getRandomInt(1, 5),
+          guests: '',
+          checkin: TIMES[window.util.getRandomInt(0, 2)],
+          checkout: TIMES[window.util.getRandomInt(0, 2)],
+          features: window.util.getRandomLengthArray(FEATURES),
+          description: '',
+          photos: []
         },
-        'location': {
-          'x': window.util.getRandomInt(300, 900),
-          'y': window.util.getRandomInt(100, 500)
+        location: {
+          x: window.util.getRandomInt(300, 900),
+          y: window.util.getRandomInt(100, 500)
         }
       });
       // Количество размещаемых гостей зависит от кол-ва комнат
