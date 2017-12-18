@@ -48,7 +48,7 @@
 
   // Добавляет подсветку Map Pin, показывает объявление
   var activateMapPin = function (mapPin) {
-    window.card.openCard(mapPin.id);
+    window.showCard.openCard(mapPin.id);
     mapPin.classList.add('map__pin--active');
   };
 
