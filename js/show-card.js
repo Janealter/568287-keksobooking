@@ -31,7 +31,7 @@
       if (window.map.mapSection.querySelector('.map__card.popup')) {
         closeCard();
       }
-      var adPopup = window.card.generateAdFragment(window.data.adsArray[adNumber]);
+      var adPopup = window.card.generateAdFragment(window.data.getAdsArray()[adNumber]);
       var closeButton = adPopup.querySelector('.popup__close');
       closeButton.tabIndex = 0;
       window.map.mapSection.insertBefore(adPopup, window.map.mapSection.querySelector('.map__filters-container'));

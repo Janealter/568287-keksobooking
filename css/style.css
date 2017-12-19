@@ -100,6 +100,19 @@ input:valid {
   border-color: #d9d9d3 !important;
 }
 
+.invalid {
+    border-color: red !important;
+}
+
+.error--message {
+    border:solid 1px;
+    border-color:red;
+    color:red;
+    font-weight:bold;
+    text-align:center;
+    padding:10px;
+}
+
 .hidden
 {
     display: none;

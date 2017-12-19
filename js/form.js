@@ -69,11 +69,32 @@
     priceInput.addEventListener('invalid', window.util.onInputInvalid);
   };
 
+  // Добавляет обработчик события для формы
+  var addNoticeFormListener = function () {
+    var URL = 'https://1510.dump.academy/keksobooking';
+    var noticeForm = notice.querySelector('.notice__form');
+    noticeForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var onLoad = function () {
+        // Убираем красные рамки у всех элементов
+        window.util.unsetInvalidClass();
+        // Сбрасываем форму
+        noticeForm.reset();
+        // Устанавливаем координаты
+        window.form.setAddressCoords(window.pin.getCursorX(), window.pin.getCursorY());
+      };
+
+      window.backend.save(URL, new FormData(noticeForm), onLoad, window.util.onBackendError);
+    });
+  };
+
   // Добавляем все обработчики событий для формы
   addTimeinTimeoutSynchronization();
   addPriceInputSynchronization();
   addCapacitySelectSynchronization();
   addCheckedInputsListeners();
+  addNoticeFormListener();
 
   window.form = {
     // Устанавливает координаты в поле Адрес

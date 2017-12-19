@@ -5,8 +5,20 @@
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
 
-  var setRedBorder = function (object) {
-    object.style = 'border-color: red';
+  // Шапка
+  var header = document.querySelector('header');
+
+  var setInvalidClass = function (object) {
+    object.classList.add('invalid');
+  };
+
+  // Создаем элемент разметки ошибки
+  var generateErrorElement = function (errorText) {
+    var ERROR_TEXT = 'Произошла ошибка!';
+    var element = document.createElement('div');
+    element.classList.add('error--message');
+    element.innerHTML = ERROR_TEXT + '<br/>' + errorText;
+    return element;
   };
 
   window.util = {
@@ -49,9 +61,39 @@
         }
       });
     },
+    // Коллбэк функция, вызываемая при ошибке отправки/получения данных
+    onBackendError: function (text) {
+      var ERROR_ELEMENT_HEIGHT = 58;
+      // Убираем предыдущее сообщение об ошибке
+      window.util.removeErrorElement();
+      var errorElement = generateErrorElement(text);
+      // Сдвигаем вниз header
+      header.style.top = parseInt(getComputedStyle(header).top, 10) + ERROR_ELEMENT_HEIGHT + 'px';
+      // Помещаем уведомление об ошибке первым элементом в блоке main
+      document.querySelector('main').insertAdjacentElement('afterbegin', errorElement);
+      // Скроллим наверх экрана, чтобы пользователь обратил внимание на сообщение
+      window.scrollTo(0, 0);
+    },
+    // Убирает сообщение об ошибке
+    removeErrorElement: function () {
+      var errorElement = document.querySelector('.error--message');
+      if (errorElement) {
+        // Ставим на место header
+        header.style.top = '';
+        // Удаляем сообщение об ошибке
+        errorElement.parentElement.removeChild(errorElement);
+      }
+    },
     // Обработчик события invalid на любом поле ввода
     onInputInvalid: function (event) {
-      setRedBorder(event.target);
+      setInvalidClass(event.target);
+    },
+    // Убирает класс invalid у всех элементов
+    unsetInvalidClass: function () {
+      var elementsWithInvalidClass = document.querySelectorAll('.invalid');
+      [].forEach.call(elementsWithInvalidClass, function (element) {
+        element.classList.remove('invalid');
+      });
     },
     // Действие при нажатии ESC
     isEscPressed: function (evt, func) {

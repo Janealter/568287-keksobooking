@@ -94,14 +94,20 @@
     document.addEventListener('mouseup', onMapPinMainMouseup);
   };
 
-  // Функция добавления обработчика события mousedown для Map Pin Main
-  var addMapPinMainListener = function () {
-    mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
-  };
-
   // Ставим в поле Адрес координаты указателя Map Pin Main
   window.form.setAddressCoords(mapPinMainCursorParams.getX(), mapPinMainCursorParams.getY());
 
-  // Добавялем обработчик событий для Map Pin Main
-  addMapPinMainListener();
+  window.pin = {
+    // Функция добавления обработчика события mousedown для Map Pin Main
+    addMapPinMainListener: function () {
+      mapPinMain.addEventListener('mousedown', onMapPinMainMousedown);
+    },
+    // Получаем координаты курсора Map Pin Main
+    getCursorX: function () {
+      return mapPinMainCursorParams.getX();
+    },
+    getCursorY: function () {
+      return mapPinMainCursorParams.getY();
+    },
+  };
 })();
