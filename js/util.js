@@ -30,6 +30,25 @@
       }
       return array;
     },
+    // Получаем значения полей value у опций select'а в виде массива
+    getOptionsValuesArray: function (select) {
+      var valuesArray = [];
+      [].forEach.call(select.options, function (option) {
+        valuesArray.push(option.value);
+      });
+      return valuesArray;
+    },
+    // Устанавливаем определенные опции для select
+    setSelectOptions: function (select, allOptions, optionsValuesToAdd) {
+      // Удаляем из select все опции
+      select.innerHTML = '';
+      // Добавляем в select нужные опции исходя из списка значений опций для добавления (optionsValuesToAdd)
+      [].forEach.call(allOptions, function (option) {
+        if (optionsValuesToAdd.indexOf(option.value) !== -1) {
+          select.options.add(option.cloneNode(true));
+        }
+      });
+    },
     // Обработчик события invalid на любом поле ввода
     onInputInvalid: function (event) {
       setRedBorder(event.target);
