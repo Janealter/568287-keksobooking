@@ -27,7 +27,8 @@
 
   // Добавляет метки на карту
   var addMapPinsToMap = function () {
-    mapSection.querySelector('.map__pins').appendChild(generateMapPinsFragment(window.data.adsArray));
+    var adsArray = window.data.getAdsArray();
+    mapSection.querySelector('.map__pins').appendChild(generateMapPinsFragment(adsArray));
   };
 
   // Обработчик события при клике на любой Map Pin
