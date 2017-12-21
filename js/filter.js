@@ -5,6 +5,11 @@
   window.filter = {
     // Возвращает отфилтрованный массив объявлений
     getFilteredAdsArray: function () {
+      var FILTER_PRICES = {
+        MIN: 10000,
+        MAX: 50000
+      };
+
       var selects = {
         type: document.querySelector('#housing-type'),
         price: document.querySelector('#housing-price'),
@@ -38,11 +43,6 @@
           node: document.querySelector('#filter-conditioner')
         }
       ];
-
-      var FILTER_PRICES = {
-        MIN: 10000,
-        MAX: 50000
-      };
 
       var adsArrayFiltered = window.data.adsArrayOrig.filter(function (ad) {
         if (selects.type.value !== 'any' && ad.offer.type !== selects.type.value) {
@@ -78,9 +78,8 @@
           if (checkBox.node.checked && ad.offer.features.indexOf(checkBox.name) === -1) {
             checkBoxesFilterSuccess = false;
             return false;
-          } else {
-            return true;
           }
+          return true;
         });
         return checkBoxesFilterSuccess;
       });
