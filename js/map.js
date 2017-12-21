@@ -6,12 +6,13 @@
 
   // Функция генерации фрагмента разметки с метками на карте
   var generateMapPinsFragment = function (adsArray) {
+    var MAP_PINS_LIMIT = 5;
     var MAP_PIN_CURSOR_HEIGHT = 18;
     var mapPinTemplate = document.querySelector('template').content.cloneNode(true);
     // Удаляем из шаблона лишний блок
     mapPinTemplate.removeChild(mapPinTemplate.querySelector('.map__card.popup'));
     var fragment = document.createDocumentFragment();
-    adsArray.forEach(function (ad, i) {
+    adsArray.every(function (ad, i) {
       var mapPinElement = mapPinTemplate.cloneNode(true);
       var button = mapPinElement.querySelector('button');
       var img = mapPinElement.querySelector('img');
@@ -21,14 +22,26 @@
       button.style.top = (ad.location.y - img.height + MAP_PIN_CURSOR_HEIGHT) + 'px';
       img.src = ad.author.avatar;
       fragment.appendChild(mapPinElement);
+      return ++i < MAP_PINS_LIMIT;
     });
     return fragment;
   };
 
   // Добавляет метки на карту
   var addMapPinsToMap = function () {
-    var adsArray = window.data.getAdsArray();
-    mapSection.querySelector('.map__pins').appendChild(generateMapPinsFragment(adsArray));
+    // Удаляем старые, если они есть
+    removeMapPinsFromMap();
+    mapSection.querySelector('.map__pins').appendChild(generateMapPinsFragment(window.data.adsArray));
+  };
+
+  // Удаояем метки
+  var removeMapPinsFromMap = function () {
+    var mapPins = mapSection.querySelectorAll('.map__pin');
+    [].forEach.call(mapPins, function (mapPin) {
+      if (!mapPin.classList.contains('map__pin--main')) {
+        mapSection.children[0].removeChild(mapPin);
+      }
+    });
   };
 
   // Обработчик события при клике на любой Map Pin
@@ -47,6 +60,14 @@
     }
   };
 
+  // Обработчик собития при изменении фильтра
+  var onFilterChange = function () {
+    window.debounce(function () {
+      window.data.adsArray = window.filter.getFilteredAdsArray();
+      addMapPinsToMap();
+    });
+  };
+
   // Добавляет подсветку Map Pin, показывает объявление
   var activateMapPin = function (mapPin) {
     window.showCard.openCard(mapPin.id);
@@ -60,7 +81,14 @@
     mapPins.addEventListener('keydown', onMapPinEnterPress);
   };
 
+  // Добавляет обработчик события на фильтр
+  var addFiltersListener = function () {
+    var mapFiltersForm = mapSection.querySelector('.map__filters');
+    mapFiltersForm.addEventListener('change', onFilterChange, true);
+  };
+
   addMapPinsListeners();
+  addFiltersListener();
 
   window.map = {
     mapSection: mapSection,

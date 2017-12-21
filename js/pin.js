@@ -6,9 +6,9 @@
 
   // Параметры Map Pin Main
   var mapPinMainParams = {
+    CURSOR_HEIGHT: 22,
     width: parseInt(window.getComputedStyle(mapPinMain).width, 10),
     height: parseInt(window.getComputedStyle(mapPinMain).height, 10),
-    CURSOR_HEIGHT: 22,
     // В изначальном состоянии параметры left и top не указаны и равны NaN, поэтому получаем координаты альтернативными способами
     getX: function () {
       var x = parseInt(mapPinMain.style.left, 10);
@@ -54,12 +54,12 @@
 
     // Обработчик события при перемещении мыши
     var onMapPinMainMousemove = function (moveEvent) {
-      moveEvent.preventDefault();
       // Лимиты для вертикального положения Map Pin Main
       var Y_LIMIT = {
         MIN: 100,
         MAX: 500
       };
+      moveEvent.preventDefault();
       // Текущие координаты курсора
       var mouseCoords = {
         x: moveEvent.clientX,
