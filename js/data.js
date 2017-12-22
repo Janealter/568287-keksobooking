@@ -1,9 +1,11 @@
 'use strict';
 
 (function () {
+  // URL для загрузки данных с сервера
+  var LOAD_URL = 'https://1510.dump.academy/keksobooking/data';
+
   // Загружает массив объявлений
   var loadAdsArray = function () {
-    var URL = 'https://1510.dump.academy/keksobooking/data';
 
     var onLoad = function (response) {
       window.data.adsArrayOrig = response;
@@ -13,7 +15,7 @@
       window.pin.addMapPinMainListener();
     };
 
-    window.backend.load(URL, onLoad, window.util.onBackendError);
+    window.backend.load(LOAD_URL, onLoad, window.util.onBackendError);
   };
 
   // Загружаем данные с сервера сразу при открытии страницы

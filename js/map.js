@@ -1,13 +1,14 @@
 'use strict';
 
 (function () {
+  var MAP_PINS_LIMIT = 5;
+  var MAP_PIN_CURSOR_HEIGHT = 18;
+
   // Получаем секцию карты
   var mapSection = document.querySelector('.map');
 
   // Функция генерации фрагмента разметки с метками на карте
   var generateMapPinsFragment = function (adsArray) {
-    var MAP_PINS_LIMIT = 5;
-    var MAP_PIN_CURSOR_HEIGHT = 18;
     var mapPinTemplate = document.querySelector('template').content.cloneNode(true);
     // Удаляем из шаблона лишний блок
     mapPinTemplate.removeChild(mapPinTemplate.querySelector('.map__card.popup'));
@@ -28,14 +29,16 @@
   };
 
   // Добавляет метки на карту
-  var addMapPinsToMap = function () {
+  var addMapPins = function () {
     // Удаляем старые, если они есть
-    removeMapPinsFromMap();
+    removeMapPins();
     mapSection.querySelector('.map__pins').appendChild(generateMapPinsFragment(window.data.adsArray));
   };
 
-  // Удаояем метки
-  var removeMapPinsFromMap = function () {
+  // Удаляем метки
+  var removeMapPins = function () {
+    // Закрываем карточку объявления
+    window.showCard.closeCard();
     var mapPins = mapSection.querySelectorAll('.map__pin');
     [].forEach.call(mapPins, function (mapPin) {
       if (!mapPin.classList.contains('map__pin--main')) {
@@ -63,8 +66,8 @@
   // Обработчик собития при изменении фильтра
   var onFilterChange = function () {
     window.debounce(function () {
-      window.data.adsArray = window.filter.getFilteredAdsArray();
-      addMapPinsToMap();
+      window.data.adsArray = window.filter.getAdsArrayFiltered();
+      addMapPins();
     });
   };
 
@@ -99,7 +102,7 @@
       // Удаляем затемнение карты
       mapSection.classList.remove('map--faded');
       // Добавляем пины на карту
-      addMapPinsToMap();
+      addMapPins();
       // Включаем форму
       noticeForm.classList.remove('notice__form--disabled');
       // Включаем поля формы

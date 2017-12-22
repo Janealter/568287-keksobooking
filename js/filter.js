@@ -1,15 +1,15 @@
 'use strict';
 
 (function () {
+  // Лимиты для фильтра цен
+  var PRICE_LIMITS = {
+    MIN: 10000,
+    MAX: 50000
+  };
 
   window.filter = {
     // Возвращает отфилтрованный массив объявлений
-    getFilteredAdsArray: function () {
-      var FILTER_PRICES = {
-        MIN: 10000,
-        MAX: 50000
-      };
-
+    getAdsArrayFiltered: function () {
       var selects = {
         type: document.querySelector('#housing-type'),
         price: document.querySelector('#housing-price'),
@@ -51,17 +51,17 @@
         if (selects.price.value !== 'any') {
           switch (selects.price.value) {
             case 'middle':
-              if (ad.offer.price < FILTER_PRICES.MIN || ad.offer.price > FILTER_PRICES.MAX) {
+              if (ad.offer.price < PRICE_LIMITS.MIN || ad.offer.price > PRICE_LIMITS.MAX) {
                 return false;
               }
               break;
             case 'low':
-              if (ad.offer.price >= FILTER_PRICES.MIN) {
+              if (ad.offer.price >= PRICE_LIMITS.MIN) {
                 return false;
               }
               break;
             case 'high':
-              if (ad.offer.price <= FILTER_PRICES.MAX) {
+              if (ad.offer.price <= PRICE_LIMITS.MAX) {
                 return false;
               }
               break;
