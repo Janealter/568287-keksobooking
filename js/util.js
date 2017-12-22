@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var ERROR_ELEMENT_HEIGHT = 58;
+  var ERROR_TEXT = 'Произошла ошибка!';
+
   // Коды кнопок
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
@@ -14,7 +17,6 @@
 
   // Создаем элемент разметки ошибки
   var generateErrorElement = function (errorText) {
-    var ERROR_TEXT = 'Произошла ошибка!';
     var element = document.createElement('div');
     element.classList.add('error--message');
     element.innerHTML = ERROR_TEXT + '<br/>' + errorText;
@@ -55,7 +57,6 @@
     },
     // Коллбэк функция, вызываемая при ошибке отправки/получения данных
     onBackendError: function (text) {
-      var ERROR_ELEMENT_HEIGHT = 58;
       // Убираем предыдущее сообщение об ошибке
       removeErrorElement();
       var errorElement = generateErrorElement(text);

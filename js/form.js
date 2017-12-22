@@ -1,6 +1,27 @@
 'use strict';
 
 (function () {
+  // URL для сохранения данных на сервер
+  var SAVE_URL = 'https://1510.dump.academy/keksobooking';
+  // SAC - Set Address Coords, задержка таймаута для установки координат в поле Адрес
+  var SAC_TIMEOUT_DELAY = 1;
+
+  // Цены для каждого типа жилья
+  var TYPE_PRICES = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+
+  // Вместимость для каждого кол-ва комнат
+  var ROOM_CAPACITIES = {
+    1: ['1'],
+    2: ['2', '1'],
+    3: ['3', '2', '1'],
+    100: ['0']
+  };
+
   // Объект верхнего уровня
   var notice = document.querySelector('.notice');
   // Переключатель вместимости
@@ -11,7 +32,7 @@
   var addressInput = notice.querySelector('#address');
 
   // Добавляет двухстороннюю синхронизацию полей Время заезда и выезда
-  var addTimeinTimeoutSynchronization = function () {
+  var addTimeInTimeOutSync = function () {
     var timeInSelect = notice.querySelector('#timein');
     var timeOutSelect = notice.querySelector('#timeout');
     var timeInValues = window.util.getOptionsValuesArray(timeInSelect);
@@ -24,13 +45,7 @@
   };
 
   // Добавляет одностороннюю синхронизацию поля Цена за ночь с полем Тип жилья
-  var addPriceInputSynchronization = function () {
-    var TYPE_PRICES = {
-      bungalo: 0,
-      flat: 1000,
-      house: 5000,
-      palace: 10000
-    };
+  var addPriceInputSync = function () {
     var typeSelect = notice.querySelector('#type');
     var priceInput = notice.querySelector('#price');
     var typeValues = Object.keys(TYPE_PRICES);
@@ -42,13 +57,7 @@
   };
 
   // Добавляет одностороннюю синхронизацию поля Кол-во комнат с полем Кол-во мест
-  var addCapacitySelectSynchronization = function () {
-    var ROOM_CAPACITIES = {
-      1: ['1'],
-      2: ['2', '1'],
-      3: ['3', '2', '1'],
-      100: ['0']
-    };
+  var addCapacitySelectSync = function () {
     // Клонируем capacitySelect в начальном состоянии
     var capacitySelectOrig = capacitySelect.cloneNode(true);
     // Задаем начальные опции для capacitySelect
@@ -69,10 +78,10 @@
     priceInput.addEventListener('invalid', window.util.onInputInvalid);
   };
 
-  // Добавляет обработчик события для формы
-  var addNoticeFormListener = function () {
-    var URL = 'https://1510.dump.academy/keksobooking';
+  // Добавляет обработчики события для формы
+  var addNoticeFormListeners = function () {
     var noticeForm = notice.querySelector('.notice__form');
+
     noticeForm.addEventListener('submit', function (event) {
       event.preventDefault();
 
@@ -81,20 +90,26 @@
         window.util.unsetInvalidClass();
         // Сбрасываем форму
         noticeForm.reset();
-        // Устанавливаем координаты
-        window.form.setAddressCoords(window.pin.getCursorX(), window.pin.getCursorY());
       };
 
-      window.backend.save(URL, new FormData(noticeForm), onLoad, window.util.onBackendError);
+      window.backend.save(SAVE_URL, new FormData(noticeForm), onLoad, window.util.onBackendError);
+    });
+
+    noticeForm.addEventListener('reset', function () {
+      // Устанавливаем timeout, чтобы координаты установились после события reset, а не во время него
+      setTimeout(function () {
+        // Устанавливаем координаты в поле Адрес
+        window.form.setAddressCoords(window.pin.getCursorX(), window.pin.getCursorY());
+      }, SAC_TIMEOUT_DELAY);
     });
   };
 
-  // Добавляем все обработчики событий для формы
-  addTimeinTimeoutSynchronization();
-  addPriceInputSynchronization();
-  addCapacitySelectSynchronization();
+  // Добавляем все обработчики событий и синхронизацию полей для формы
+  addTimeInTimeOutSync();
+  addPriceInputSync();
+  addCapacitySelectSync();
   addCheckedInputsListeners();
-  addNoticeFormListener();
+  addNoticeFormListeners();
 
   window.form = {
     // Устанавливает координаты в поле Адрес

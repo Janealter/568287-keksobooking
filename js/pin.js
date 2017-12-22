@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  // Лимиты для вертикального положения Map Pin Main
+  var Y_LIMIT = {
+    MIN: 100,
+    MAX: 500
+  };
+
   var mapPinMain = window.map.mapSection.querySelector('.map__pin--main');
   var bodyWidth = parseInt(window.getComputedStyle(document.body).maxWidth, 10);
 
@@ -25,13 +31,10 @@
       }
       return Math.round(y);
     },
-  };
-  // Параметры курсора Map Pin Main
-  var mapPinMainCursorParams = {
-    getX: function () {
+    getCursorX: function () {
       return Math.round(mapPinMainParams.getX() + mapPinMainParams.width / 2);
     },
-    getY: function () {
+    getCursorY: function () {
       return Math.round(mapPinMainParams.getY() + mapPinMainParams.height + mapPinMainParams.CURSOR_HEIGHT);
     }
   };
@@ -54,11 +57,6 @@
 
     // Обработчик события при перемещении мыши
     var onMapPinMainMousemove = function (moveEvent) {
-      // Лимиты для вертикального положения Map Pin Main
-      var Y_LIMIT = {
-        MIN: 100,
-        MAX: 500
-      };
       moveEvent.preventDefault();
       // Текущие координаты курсора
       var mouseCoords = {
@@ -76,7 +74,7 @@
       if (mapPinMainCoords.y - mapPinMainParams.height / 2 > Y_LIMIT.MIN && mapPinMainCoords.y + mapPinMainParams.width / 2 < Y_LIMIT.MAX) {
         mapPinMain.style.top = mapPinMainCoords.y + 'px';
       }
-      window.form.setAddressCoords(mapPinMainCursorParams.getX(), mapPinMainCursorParams.getY());
+      window.form.setAddressCoords(mapPinMainParams.getCursorX(), mapPinMainParams.getCursorY());
     };
 
     // Обработчик события при отпускании кнопки мыши
@@ -95,7 +93,7 @@
   };
 
   // Ставим в поле Адрес координаты указателя Map Pin Main
-  window.form.setAddressCoords(mapPinMainCursorParams.getX(), mapPinMainCursorParams.getY());
+  window.form.setAddressCoords(mapPinMainParams.getCursorX(), mapPinMainParams.getCursorY());
 
   window.pin = {
     // Функция добавления обработчика события mousedown для Map Pin Main
@@ -104,10 +102,10 @@
     },
     // Получаем координаты курсора Map Pin Main
     getCursorX: function () {
-      return mapPinMainCursorParams.getX();
+      return mapPinMainParams.getCursorX();
     },
     getCursorY: function () {
-      return mapPinMainCursorParams.getY();
+      return mapPinMainParams.getCursorY();
     },
   };
 })();

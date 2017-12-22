@@ -19,7 +19,7 @@
       var adFragment = document.querySelector('template').content.cloneNode(true);
       // Удаляем из объявления лишний элемент
       adFragment.removeChild(adFragment.querySelector('.map__pin'));
-      // Создаем простые ссылки на нужные нам объекты внутри adFragment
+      // Создаем ссылки на нужные нам объекты внутри adFragment
       var title = adFragment.querySelector('h3');
       var pBlocks = adFragment.querySelectorAll('p');
       var address = pBlocks[0].firstElementChild;
