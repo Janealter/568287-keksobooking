@@ -21,6 +21,6 @@
     "test": "eslint js/"
   },
   "engines": {
-    "node": "^6.10"
+    "element": "^6.10"
   }
 }

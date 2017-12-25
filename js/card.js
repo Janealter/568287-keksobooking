@@ -2,8 +2,8 @@
 
 (function () {
   window.card = {
-    // Функция генерации фрагмента разметки с объявлением
-    generateAdFragment: function (ad) {
+    // Функция генерации элемента разметки с объявлением
+    generateAdElement: function (ad) {
       var HOUSING_TYPES = {
         'flat': {
           'ru': 'Квартира'
@@ -16,20 +16,20 @@
         }
       };
       // Создаем фрагмент объявления, клонируя шаблон
-      var adFragment = document.querySelector('template').content.cloneNode(true);
+      var adElement = document.querySelector('template').content.cloneNode(true);
       // Удаляем из объявления лишний элемент
-      adFragment.removeChild(adFragment.querySelector('.map__pin'));
-      // Создаем ссылки на нужные нам объекты внутри adFragment
-      var title = adFragment.querySelector('h3');
-      var pBlocks = adFragment.querySelectorAll('p');
+      adElement.removeChild(adElement.querySelector('.map__pin'));
+      // Создаем ссылки на нужные нам объекты внутри adElement
+      var title = adElement.querySelector('h3');
+      var pBlocks = adElement.querySelectorAll('p');
       var address = pBlocks[0].firstElementChild;
       var price = pBlocks[1];
-      var type = adFragment.querySelector('h4');
+      var type = adElement.querySelector('h4');
       var roomCount = pBlocks[2];
       var checkinCheckout = pBlocks[3];
-      var features = adFragment.querySelector('.popup__features');
+      var features = adElement.querySelector('.popup__features');
       var description = pBlocks[4];
-      var avatar = adFragment.querySelector('img');
+      var avatar = adElement.querySelector('img');
       // Изменяем данные
       title.textContent = ad.offer.title;
       address.textContent = ad.offer.address;
@@ -45,7 +45,7 @@
       });
       description.textContent = ad.offer.description;
       avatar.src = ad.author.avatar;
-      return adFragment;
+      return adElement;
     }
   };
 })();

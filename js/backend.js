@@ -11,7 +11,7 @@
   };
 
   // Инициализирует объект XMLHttpRequest
-  var initXhr = function (onLoad, onError) {
+  var initializeXhr = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = RESPONSE_TYPE;
 
@@ -38,14 +38,14 @@
   window.backend = {
     // Скачивает данные с сервера
     load: function (url, onLoad, onError) {
-      var xhr = initXhr(onLoad, onError);
+      var xhr = initializeXhr(onLoad, onError);
 
       xhr.open('GET', url);
       xhr.send();
     },
     // Загружает данные на сервер
     save: function (url, data, onLoad, onError) {
-      var xhr = initXhr(onLoad, onError);
+      var xhr = initializeXhr(onLoad, onError);
 
       xhr.open('POST', url);
       xhr.send(data);

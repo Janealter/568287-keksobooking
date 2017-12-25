@@ -32,7 +32,7 @@
   var addressInput = notice.querySelector('#address');
 
   // Добавляет двухстороннюю синхронизацию полей Время заезда и выезда
-  var addTimeInTimeOutSync = function () {
+  var addTimeInTimeOutSynchronization = function () {
     var timeInSelect = notice.querySelector('#timein');
     var timeOutSelect = notice.querySelector('#timeout');
     var timeInValues = window.util.getOptionsValuesArray(timeInSelect);
@@ -45,7 +45,7 @@
   };
 
   // Добавляет одностороннюю синхронизацию поля Цена за ночь с полем Тип жилья
-  var addPriceInputSync = function () {
+  var addPriceInputSynchronization = function () {
     var typeSelect = notice.querySelector('#type');
     var priceInput = notice.querySelector('#price');
     var typeValues = Object.keys(TYPE_PRICES);
@@ -57,7 +57,7 @@
   };
 
   // Добавляет одностороннюю синхронизацию поля Кол-во комнат с полем Кол-во мест
-  var addCapacitySelectSync = function () {
+  var addCapacitySelectSynchronization = function () {
     // Клонируем capacitySelect в начальном состоянии
     var capacitySelectOrig = capacitySelect.cloneNode(true);
     // Задаем начальные опции для capacitySelect
@@ -82,8 +82,8 @@
   var addNoticeFormListeners = function () {
     var noticeForm = notice.querySelector('.notice__form');
 
-    noticeForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+    noticeForm.addEventListener('submit', function (evt) {
+      evt.preventDefault();
 
       var onLoad = function () {
         // Убираем красные рамки у всех элементов
@@ -105,9 +105,9 @@
   };
 
   // Добавляем все обработчики событий и синхронизацию полей для формы
-  addTimeInTimeOutSync();
-  addPriceInputSync();
-  addCapacitySelectSync();
+  addTimeInTimeOutSynchronization();
+  addPriceInputSynchronization();
+  addCapacitySelectSynchronization();
   addCheckedInputsListeners();
   addNoticeFormListeners();
 

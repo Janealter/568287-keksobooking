@@ -8,11 +8,11 @@
   var loadAdsArray = function () {
 
     var onLoad = function (response) {
-      window.data.adsArrayOrig = response;
+      window.data.adsArrayOriginal = response;
       // Подготавливаем основной массив (в начале работы он такой же, как и оригинальный массив)
-      window.data.adsArray = window.data.adsArrayOrig;
+      window.data.adsArray = window.data.adsArrayOriginal;
       // Добавялем обработчик события mousedown для Map Pin Main
-      window.pin.addMapPinMainListener();
+      window.pin.addListener();
     };
 
     window.backend.load(LOAD_URL, onLoad, window.util.onBackendError);
@@ -23,7 +23,7 @@
 
   window.data = {
     // Оригинальный массив с объявлениями, загруженный с сервера, в ходе работы не изменяется
-    adsArrayOrig: null,
+    adsArrayOriginal: null,
     // Основной массив, с которым работает сайт, изменяется в ходе работы
     adsArray: null
   };
