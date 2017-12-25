@@ -20,31 +20,31 @@
       var checkBoxes = [
         {
           name: 'wifi',
-          node: document.querySelector('#filter-wifi')
+          element: document.querySelector('#filter-wifi')
         },
         {
           name: 'dishwasher',
-          node: document.querySelector('#filter-dishwasher')
+          element: document.querySelector('#filter-dishwasher')
         },
         {
           name: 'parking',
-          node: document.querySelector('#filter-parking')
+          element: document.querySelector('#filter-parking')
         },
         {
           name: 'washer',
-          node: document.querySelector('#filter-washer')
+          element: document.querySelector('#filter-washer')
         },
         {
           name: 'elevator',
-          node: document.querySelector('#filter-elevator')
+          element: document.querySelector('#filter-elevator')
         },
         {
           name: 'conditioner',
-          node: document.querySelector('#filter-conditioner')
+          element: document.querySelector('#filter-conditioner')
         }
       ];
 
-      var adsArrayFiltered = window.data.adsArrayOrig.filter(function (ad) {
+      var adsArrayFiltered = window.data.adsArrayOriginal.filter(function (ad) {
         if (selects.type.value !== 'any' && ad.offer.type !== selects.type.value) {
           return false;
         }
@@ -73,14 +73,13 @@
         if (selects.guests.value !== 'any' && ad.offer.guests.toString() !== selects.guests.value) {
           return false;
         }
-        var checkBoxesFilterSuccess = true;
-        checkBoxes.every(function (checkBox) {
-          if (checkBox.node.checked && ad.offer.features.indexOf(checkBox.name) === -1) {
-            checkBoxesFilterSuccess = false;
-            return false;
+        var checkBoxesFilterSuccess = checkBoxes.every(function (checkBox) {
+          if (checkBox.element.checked) {
+            return ad.offer.features.indexOf(checkBox.name) !== -1;
           }
           return true;
         });
+
         return checkBoxesFilterSuccess;
       });
 

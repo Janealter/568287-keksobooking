@@ -68,8 +68,8 @@
       window.scrollTo(0, 0);
     },
     // Обработчик события invalid на любом поле ввода
-    onInputInvalid: function (event) {
-      setInvalidClass(event.target);
+    onInputInvalid: function (evt) {
+      setInvalidClass(evt.target);
     },
     // Убирает класс invalid у всех элементов
     unsetInvalidClass: function () {
