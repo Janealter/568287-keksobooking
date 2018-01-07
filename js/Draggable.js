@@ -16,10 +16,12 @@
       HEIGHT: parseInt(window.getComputedStyle(document.body).height, 10)
     };
 
-    limitXMin = typeof limitXMin === 'number' ? limitXMin : 0;
-    limitXMax = typeof limitXMax === 'number' ? limitXMax : BodySize.WIDTH;
-    limitYMin = typeof limitYMin === 'number' ? limitYMin : 0;
-    limitYMax = typeof limitYMax === 'number' ? limitYMax : BodySize.HEIGHT;
+    this.disableDrag();
+
+    limitXMin = limitXMin || 0;
+    limitXMax = limitXMax || BodySize.WIDTH;
+    limitYMin = limitYMin || 0;
+    limitYMax = limitYMax || BodySize.HEIGHT;
 
     var draggableElement = this;
 
