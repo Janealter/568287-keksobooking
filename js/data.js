@@ -12,7 +12,7 @@
       // Подготавливаем основной массив (в начале работы он такой же, как и оригинальный массив)
       window.data.adsArray = window.data.adsArrayOriginal;
       // Добавялем обработчик события mousedown для Map Pin Main
-      window.pin.addListener();
+      window.pinMain.setDraggable();
     };
 
     window.backend.load(LOAD_URL, onLoad, window.util.onBackendError);

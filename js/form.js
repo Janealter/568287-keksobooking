@@ -99,7 +99,7 @@
       // Устанавливаем timeout, чтобы координаты установились после события reset, а не во время него
       setTimeout(function () {
         // Устанавливаем координаты в поле Адрес
-        window.form.setAddressCoords(window.pin.getCursorX(), window.pin.getCursorY());
+        window.form.setAddressCoords(window.pinMain.parameters.getCursorX(), window.pinMain.parameters.getCursorY());
       }, SAC_TIMEOUT_DELAY);
     });
   };
