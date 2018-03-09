@@ -97,9 +97,10 @@
 
     noticeForm.addEventListener('reset', function () {
       // Устанавливаем timeout, чтобы координаты установились после события reset, а не во время него
-      setTimeout(function () {
+      var timeoutID = setTimeout(function () {
         // Устанавливаем координаты в поле Адрес
         window.form.setAddressCoords(window.pinMain.parameters.getCursorX(), window.pinMain.parameters.getCursorY());
+        clearTimeout(timeoutID);
       }, SAC_TIMEOUT_DELAY);
     });
   };
